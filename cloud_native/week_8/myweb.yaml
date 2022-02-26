@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myweb
+spec:
+  terminationGracePeriodSeconds: 10
+  containers:
+    - name: myweb
+      image: mywebser:v3.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        httpGet:
+          ### this probe will fail with 404 error code
+          ### only httpcode between 200-400 is retreated as success
+          path: /healthz
+          port: 8080
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 3
+      readinessProbe:
+        httpGet:
+          ### this probe will fail with 404 error code
+          ### only httpcode between 200-400 is retreated as success
+          path: /readiness
+          port: 8080
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        successThreshold: 2
+      lifecycle:
+        preStop:
+          httpGet:
+            ### this probe will fail with 404 error code
+            ### only httpcode between 200-400 is retreated as success
+            path: /preStop
+            port: 8080
+
+      resources:
+        limits:
+          cpu: 200m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 50Mi
+
+      envFrom:
+        - configMapRef:
+            name: myweb-config

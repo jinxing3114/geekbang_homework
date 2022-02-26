@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myweb-config
+data:
+  # 类属性键；每一个键都映射到一个简单的值
+  host: ""
+  port: "8080"
+  healthzUri: "/healthz"
+  readinessUri: "/readiness"
+  preStopUri: "/preStop"
+
