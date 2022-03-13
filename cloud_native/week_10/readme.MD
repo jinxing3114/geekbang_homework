@@ -13,4 +13,4 @@ kubectl get pods myweb -o yaml
 ```
 
 ## monitoring data
-![image](https://github.com/jinxing3114/geekbang_homework/blob/master/cloud_native/week_10/panel.png)
+![image](https://raw.githubusercontent.com/jinxing3114/geekbang_homework/master/cloud_native/week_10/panel.png)
