@@ -1,0 +1,14 @@
+FROM golang:1.17-alpine AS build
+
+WORKDIR /go/src/http
+
+COPY . .
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN CGO_ENABLED=0  GOOS=linux GOARCH=amd64 go build -o main
+
+FROM alpine
+COPY --from=build /go/src/http/main /main
+
+EXPOSE 8080
+
+ENTRYPOINT ["/main"]
