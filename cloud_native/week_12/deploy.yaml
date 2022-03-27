@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mydeployweb
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+      labels:
+        app: mydeployweb
+    spec:
+      containers:
+        - name: myweb
+          imagePullPolicy: IfNotPresent
+          image: myweb:v0.0.1
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mydeployser
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: mydeployweb
